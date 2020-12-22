@@ -12,6 +12,6 @@
 </head>
 <body>
 
-<? include "menu.php" ?>
+    <? include "menu.php" ?>
 
     <div class="container">
