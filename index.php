@@ -1,4 +1,6 @@
-<?php include "include/template/header.php" ?>
+<?php include "include/template/header.php";
+$arNews = getLastNews(10);
+?>
 <h1>Новости</h1>
 <div class="row mb-3">
     <div class="col">
@@ -6,19 +8,20 @@
     </div>
 </div>
 <div class="row mb-3">
-    <div class="col-8"><ul class="list-group">
+    <div class="col-8">
       <h3>Последние новости</h3>
-      <li class="list-group-item"><a href="#">Cras justo odio</a></li>
-      <li class="list-group-item"><a href="#">Dapibus ac facilisis in</a></li>
-      <li class="list-group-item"><a href="#">Morbi leo risus</a></li>
-      <li class="list-group-item"><a href="#">Porta ac consectetur ac</a></li>
-      <li class="list-group-item"><a href="#">Vestibulum at eros</a></li>
-      <li class="list-group-item"><a href="#">Cras justo odio</a></li>
-      <li class="list-group-item"><a href="#">Dapibus ac facilisis in</a></li>
-      <li class="list-group-item"><a href="#">Morbi leo risus</a></li>
-      <li class="list-group-item"><a href="#">Porta ac consectetur ac</a></li>
-      <li class="list-group-item"><a href="#">Vestibulum at eros</a></li>
-    </ul></div>
+      <ul class="mb-3 list-group">
+          <?foreach($arNews as $news) {?>
+            <li class="list-group-item">
+              <span class="bg-warning "><?echo $news['datetime']?></span>
+              <a href="<?echo $news['url']?>">
+                <?echo $news['title']?>
+              </a>
+            </li>
+
+            <?}?>
+      </ul>
+    </div>
 <?php include "include/template/right_pop_news.php" ?>
 </div>
 <div class="row">

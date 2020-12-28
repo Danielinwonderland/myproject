@@ -1,5 +1,6 @@
 <?php
     session_start();
+    include '/var/www/html/project/include/core/functions.php'
 ?>
 
 <!DOCTYPE html>
