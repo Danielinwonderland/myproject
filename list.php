@@ -1,46 +1,19 @@
-<?php include "include/header.php";
-  $arNews = [
-    [
-      'title' => 'У Канаді знайшли мумію вовченяти віком приблизно 57 тисяч років',
-      'url' => '#',
-      'datetime' => '19:41',
-    ],
-    [
-      'title' => 'В Україні планують продавати антибіотики лише за рецептом ㅡ Степанов',
-      'url' => '#',
-      'datetime' => '18:11',
-    ],
-    [
-      'title' => 'Журналіст Бутусов стане позаштатним радником міністра оборони. Він працюватиме на громадських засадах',
-      'url' => '#',
-      'datetime' => '15:36',
-    ],
-    [
-      'title' => 'У Ватикані назвали використання вакцини від COVID-19 «морально прийнятним»',
-      'url' => '#',
-      'datetime' => '14:42',
-    ],
-    [
-      'title' => 'У Таїланді чоловік урятував життя слоненяті, яке збив мотоцикл. Він зробив йому непрямий масаж серця',
-      'url' => '#',
-      'datetime' => '22:41',
-    ],
-    [
-      'title' => 'Facebook вимкнув автоматичне сканування особистих листувань у країнах ЄС. Ця функція виявляла насилля над дітьми',
-      'url' => '#',
-      'datetime' => '17:41',
-    ],
-    [
-      'title' => 'САП просить суд взяти під варту заступника голови Офісу президента Татарова',
-      'url' => '#',
-      'datetime' => '18:33',
-    ],
-    [
-      'title' => 'МОЗ представило план щеплення українців від коронавірусу. Кому і коли держава обіцяє вакцини?',
-      'url' => '#',
-      'datetime' => '19:45',
-    ],
-  ];
+<?php include "include/template/header.php";
+  $xml = 'http://k.img.com.ua/rss/ru/all_news2.0.xml';
+  $strXML = file_get_contents($xml);
+  $objXML = simplexml_load_string($strXML, 'SimpleXMLElement', LIBXML_NOCDATA);
+  $jsonXml = json_encode($objXML);
+  $arXml = json_decode($jsonXml, true);
+
+  foreach($arXml['channel']['item'] as $item){
+    $arNews[] =     [
+      'title' => $item['title'],
+      'id' => $item['guid'],
+      'url' => 'detail.php?id=' . $item['guid'],
+      'datetime' => date('H:m', strtotime($item['pubDate'])),
+    ];
+  }
+  
 ?>
           <h1>Список новостей</h1>
           <div class="row mb-3">
@@ -75,6 +48,6 @@
         
             
             </div>
-            <?php include "include/right_pop_news.php" ?>
+            <?php include "include/template/right_pop_news.php" ?>
           </div>
-          <?php include "include/footer.php" ?>
+          <?php include "include/template/footer.php" ?>

@@ -1,4 +1,4 @@
-<?php include "include/header.php" ?>
+<?php include "include/template/header.php" ?>
 <h1>Новости</h1>
 <div class="row mb-3">
     <div class="col">
@@ -19,7 +19,7 @@
       <li class="list-group-item"><a href="#">Porta ac consectetur ac</a></li>
       <li class="list-group-item"><a href="#">Vestibulum at eros</a></li>
     </ul></div>
-<?php include "include/right_pop_news.php" ?>
+<?php include "include/template/right_pop_news.php" ?>
 </div>
 <div class="row">
   <div class="col">
@@ -79,4 +79,4 @@
         </div>
     </div>
 </div>
-<?php include "include/footer.php" ?>
+<?php include "include/template/footer.php" ?>
