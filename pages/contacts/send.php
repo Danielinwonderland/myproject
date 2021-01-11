@@ -63,3 +63,5 @@ function mailWrite(){
 if(!empty($_POST)){
   mailWrite();
 }
+
+header("Location: /contacts/");

@@ -1,0 +1,2 @@
+<?php
+printTemplateHtml('profile/index');

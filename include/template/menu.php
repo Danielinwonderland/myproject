@@ -1,18 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand" href="#">
-            <img src="https://fakeimg.pl/512x408/ff0000,128/000,255/?text=GO&font=lobster" alt="" width="30" height="24">
-            </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            <a class="nav-link" href="#">Features</a>
-            <a class="nav-link" href="#">Pricing</a>
-            <a class="nav-link " href="profile.php" >Персональный раздел</a>
-        </div>
-        </div>
-    </div>
-</nav>
+<div class="navbar-nav">
+    <a class="nav-link active" aria-current="page" href="<?php echo url('main_page') ?>">Home</a>
+    <a class="nav-link" href="<?php echo url('news_list') ?>">List</a>
+    <a class="nav-link" href="/detail.php">Detail</a>
+    <a class="nav-link" href="/info.php">Info</a>
+    <a class="nav-link" href="<?php echo url('contacts') ?>">Contacts</a>
+    <?php if(isAuthorizedUser()) { ?>
+        <a class="nav-link fw-bold" href="<?php echo url('profile') ?>"><?php echo $_SESSION['user']['name']; ?></a>
+        <a class="nav-link" href="<?php echo url('logout') ?>">[Logout]</a>
+    <?php } else { ?>
+        <a class="nav-link" href="<?php echo url('auth') ?>">Profile</a>
+    <?php } ?>
+</div>

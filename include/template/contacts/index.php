@@ -1,7 +1,4 @@
-<?php 
-include "include/template/header.php";
-?>
-          <h1>Контакты</h1>
+<h1>Контакты</h1>
           <div class="row mb-3">
               <div class="col-8">
                 <p><strong><em>«</em></strong><em>На животі лежати, на боці лежати, на спині не лежати. Дихаємо хвилин сорок і робимо перерву. І весь час записуєте ситуацію, ведете щоденник. Ваше завдання — зробити так, щоб вона добу пролежала без кисню. Ось після цього ви повинні набрати мене і сказати: “Ми вже, і ми можемо його повернути”»</em>, — консультує когось телефоном Катерина Ножевникова, невисока жінка у чорній куртці.</p>
@@ -12,7 +9,7 @@ include "include/template/header.php";
                   <li>Email: exemple@gmail.com</li>
                 </ul>
                 <h4>Связаться с нами</h4>
-                <form method="POST" action="send.php">
+                <form method="POST" action="<?php echo url('contacts_send_form'); ?>">
                   <div class="mb-3">
                     <label for="name" class="form-label">Ваше имя</label>
                     <input type="text" class="form-control" required id="name" name='name' placeholder="Ivan Ivanov">
@@ -29,16 +26,17 @@ include "include/template/header.php";
                     <label for="exampleFormControlTextarea1"  class="form-label">Ваше сообщение</label>
                     <textarea class="form-control" name='text' required id="exampleFormControlTextarea1" rows="3"></textarea>
                   </div>
-                  <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+                  <button type="submit" class="btn btn-primary mb-3">Отправить сообщение</button>
                 </form>
-                <? if(isset($_SESSION['mail_form'])){?>
-                  <? if($_SESSION['mail_form']['status'] = 1){?>
-                  <div class="alert alert-success" role="alert">
-                    <? echo $_SESSION['mail_form']['message']; ?>
-                  </div>
-                  <? }} unset($_SESSION['mail_form'])?>
-              </div>
-
-              <?php include "include/template/right_pop_news.php" ?>
-          </div>
-          <?php include "include/template/footer.php" ?>
+            <?php if(isset($_SESSION['mail_form'])) { ?>
+                <div class="alert alert-<?php echo $_SESSION['mail_form']['status'] == 1 ? 'success' : 'danger'; ?>" role="alert">
+                    <?php echo $_SESSION['mail_form']['message']; ?>
+                </div>
+            <?php
+            unset($_SESSION['mail_form']);
+            } ?>
+        </div>
+        <div class="col-4">
+        <?php includeBlock('right_popular_news') ?>
+        </div>
+    </div>
