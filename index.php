@@ -22,10 +22,8 @@ $arRoutesWithoutHeaderAndFooter = [
 
 $arRoute = getRoute();
 
-// получаем путь к файлу
 $page_file = $_SERVER['DOCUMENT_ROOT'] . '/pages/' . $arRoute['page'] . '.php';
 
-// если файл существует, подключаем его
 if(!is_file($page_file)) {
     $page_file = $_SERVER['DOCUMENT_ROOT'] . '/pages/404.php';
 }
