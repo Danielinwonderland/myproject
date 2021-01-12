@@ -12,6 +12,8 @@ $routes = [
     'profile' => ['/profile/', '/profile/', 'profile'],
     'logout' => ['/profile/logout/', '/profile/logout/', 'profile/logout'],
     'auth' => ['/profile/auth/', '/profile/auth/', 'profile/auth'],
+    'info' => ['/news/info/', '/news/info/', 'news/info'],
+    'detail' => ['/news/detail/', '/news/detail/', 'news/detail'],
 ];
 
 $arRoutesWithoutHeaderAndFooter = [
@@ -21,6 +23,7 @@ $arRoutesWithoutHeaderAndFooter = [
 
 
 $arRoute = getRoute();
+
 
 $page_file = $_SERVER['DOCUMENT_ROOT'] . '/pages/' . $arRoute['page'] . '.php';
 

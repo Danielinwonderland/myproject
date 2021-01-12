@@ -1,0 +1,2 @@
+<?php
+printTemplateHtml('news/info');
