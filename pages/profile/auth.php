@@ -9,7 +9,7 @@ if(isAuthorizedUser()) {
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
-if(loginUser($email, $password)) {
+if(!empty($_POST) && loginUser($email, $password)) {
     header("Location: $profile", true, 301);
     exit;
 } elseif(isset($_POST['email'])) {

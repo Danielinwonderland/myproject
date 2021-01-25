@@ -43,26 +43,33 @@ function getPhotoNews($limit = 6) : array {
 }
 
 function isAuthorizedUser(): bool {
-    return isset($_SESSION['user']['auth']) && $_SESSION['user']['auth'] == 1;
+    return isset($_SESSION['user']['id']) && $_SESSION['user']['id'] > 0;
 }
 
 function loginUser($email, $password): bool {
 
     $result = false;
 
-    $email_user = 'user@gmail.com';
-    $password_user = '1234';
+    $link = db_connect();
 
-    if($email == $email_user && $password == $password_user) {
-
-        $_SESSION = [
-            'user' => [
-                'name' => 'Daniil',
-                'auth' => 1,
-            ],
-        ];
-
-        $result = true;
+    $query = "SELECT id, firstname, email, password FROM users WHERE email = ? LIMIT 1";
+    $stmt = mysqli_prepare($link, $query);
+    mysqli_stmt_bind_param($stmt, 's', $email);
+    mysqli_stmt_execute($stmt);
+    $res = mysqli_stmt_get_result($stmt);
+    if ($row = mysqli_fetch_assoc($res)) {
+        $hash = $row['password'];
+        if(password_verify($password, $hash)) {
+            $_SESSION = [
+                'user' => [
+                    'id' => $row['id'],
+                    'name' => $row['firstname'],
+                    'email' => $row['email'],
+                    'is_admin' => $row['is_admin']
+                ],
+            ];
+            $result = true;
+        }
     }
 
     return $result;
@@ -138,4 +145,192 @@ function includeBlock($block) {
     if(is_file($block_path)) {
         include $block_path;
     }
+}
+
+function db_connect() {
+    $link = mysqli_connect('localhost', 'root', '', 'freelance');
+
+    if (mysqli_connect_errno()) {
+        echo "Не удалось подключиться к MySQL: " . mysqli_connect_error();
+        exit;
+    }
+    mysqli_set_charset ( $link , 'utf8' );
+    return $link;
+}
+
+function getUserList() {
+    $link = db_connect();
+    $query = "SELECT id, firstname, lastname, email, password, is_admin FROM users ORDER BY id DESC";
+    $result = mysqli_query($link, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function getCategoriesList() {
+    $link = db_connect();
+    $query = "SELECT id, name, parent_id FROM categories ORDER BY id DESC";
+    $result = mysqli_query($link, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function getTasksList() {
+    $link = db_connect();
+    $query = "SELECT id, head, descn, price, customer, executor, datatime, category, status, views FROM tasks ORDER BY id DESC";
+    $result = mysqli_query($link, $query);
+    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+
+function getUserItem(int $id) {
+    $arUser = [];
+    $link = db_connect();
+    $query = "SELECT id, firstname, lastname, email, password, is_admin FROM users WHERE id = " . $id;
+    $result = mysqli_query($link, $query);
+    if($row = mysqli_fetch_assoc($result)) {
+        $arUser = $row;
+    }
+    return $arUser;
+}
+
+function getCategoryItem(int $id) {
+    $arUser = [];
+    $link = db_connect();
+    $query = "SELECT id, name, parent_id FROM categories WHERE id = " . $id;
+    $result = mysqli_query($link, $query);
+    if($row = mysqli_fetch_assoc($result)) {
+        $arUser = $row;
+    }
+    return $arUser;
+}
+
+function getTasksItem(int $id) {
+    $arUser = [];
+    $link = db_connect();
+    $query = "SELECT id, head, descn, price, customer, executor, datatime, category, status, views FROM tasks WHERE id = " . $id;
+    $result = mysqli_query($link, $query);
+    if($row = mysqli_fetch_assoc($result)) {
+        $arUser = $row;
+    }
+    return $arUser;
+}
+
+function updateTask(int $id, string $head,  string $descn, int $price, string $customer, string $executor, string $category, string $status ) {
+    $link = db_connect();
+    $query = "
+        UPDATE tasks
+        SET
+            head = '" . $head . "',
+            descn = '" . $descn . "',
+            price = '" . $price . "',
+            customer = " . $customer . ",
+            executor = " . $executor . ",
+            category = '" . $category . "',
+            status = '" . $status . "'
+        WHERE id = {$id}
+    ";
+    var_dump($query);
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+
+function updateUser(int $id, string $firstname,  string $lastname, string $email, int $is_admin, string $password = '') {
+    $link = db_connect();
+    $query = "
+        UPDATE users
+        SET
+            firstname = '" . $firstname . "',
+            lastname = '" . $lastname . "',
+            email = '" . $email . "',
+            is_admin = " . $is_admin . "
+        WHERE id = {$id}
+    ";
+    $result = mysqli_query($link, $query);
+    if($password != '') {
+        $hash = password_hash($password, PASSWORD_DEFAULT);
+        $query = "UPDATE users SET password = '" . $hash . "' WHERE id = {$id}";
+        mysqli_query($link, $query);
+    }
+    return (bool)$result;
+}
+
+
+function updateCategory(int $id, string $name,  string $parent_id) {
+    $link = db_connect();
+    $query = "
+        UPDATE users
+        SET
+            name = '" . $name . "',
+            parent_id = '" . $parent_id . "',
+        WHERE id = {$id}
+    ";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+function addUser(string $firstname,  string $lastname, string $email, int $is_admin, string $password) {
+    $link = db_connect();
+    $hash = password_hash($password, PASSWORD_DEFAULT);
+    $query = "
+        INSERT INTO users
+        SET
+            firstname = '" . $firstname . "',
+            lastname = '" . $lastname . "',
+            email = '" . $email . "',
+            is_admin = " . $is_admin . ",
+            password = '" . $hash . "'
+    ";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+
+function addCategory(string $name,  string $parent_id) {
+    $link = db_connect();
+    $query = "
+        INSERT INTO categories
+        SET
+            name = '" . $name . "',
+            parent_id = '" . $parent_id . "'
+    ";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+
+function addTask(string $head,  string $descn, int $price, string $customer, string $executor, string $category, string $status) {
+    $link = db_connect();
+    $query = "
+        INSERT INTO tasks
+        SET
+            head = '" . $head . "',
+            descn = '" . $descn . "',
+            price = '" . $price . "',
+            customer = " . $customer . ",
+            executor = " . $executor . ",
+            category = '" . $category . "',
+            status = '" . $status . "'
+    ";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+function deleteUser(int $id) {
+    $link = db_connect();
+    $query = "DELETE FROM users WHERE id = {$id}";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+function deleteCategory(int $id) {
+    $link = db_connect();
+    $query = "DELETE FROM categories WHERE id = {$id}";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
+}
+
+function deleteTask(int $id) {
+    $link = db_connect();
+    $query = "DELETE FROM tasks WHERE id = {$id}";
+    $result = mysqli_query($link, $query);
+    return (bool)$result;
 }
