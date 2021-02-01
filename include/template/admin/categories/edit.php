@@ -20,18 +20,27 @@
         <?php } else { ?>
             <div class="card">
                 <!-- form start -->
-                <form class="form-horizontal" method="post">
+                <form class="form-horizontal" method="post" action="<?php echo url('admin_categories_update'); ?>">
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Название категории</label>
                             <div class="col-sm-10">
-                                <input type="text" name="firstname" value="<?php echo $arData['name'] ?? ''; ?>" class="form-control" required>
+                                <input type="text" name="name" value="<?php echo $arData['name'] ?? ''; ?>" class="form-control" required>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">ID родителя</label>
                             <div class="col-sm-10">
-                                <input type="text" name="lastname" value="<?php echo $arData['parent_id'] ?? ''; ?>" class="form-control">
+                                <select class="form-control" name="parent_id" id="">
+                                    <option value="">Верхний уровень</option>
+                                    <?php foreach ($arData['categories_all'] as $arCategory){ ?>
+                                    <option value="<?php echo $arCategory['id']; ?>" <?php if(($arData['parent_id'] ?? '') == $arCategory['id']){?> selected="selected" <?php } ?>><?php
+                                        for($i = 0; $i < $arCategory['level']; $i++){
+                                            echo '&#10146';
+                                        } 
+                                        echo '[', $arCategory['id'], '] ', $arCategory['name']; ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
                         </div>
                     </div>

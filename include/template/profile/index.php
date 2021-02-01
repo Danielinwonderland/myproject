@@ -1,4 +1,5 @@
 <h1>Персональный раздел</h1>
+<?php if(isAdminUser()){ ?><a class="btn mb-3 btn-primary" href="<?php echo url('admin_users'); ?>" role="button">To admin panel</a> <?php };?>
 <div class="row mb-3">
     <div class="col-md-6">
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">

@@ -12,17 +12,16 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-
+        <div class="row mb-3 mt-n5">
+            <div class="col col-sm-12">
+                <a href="<?php echo url('admin_users_add'); ?>" class="btn btn-info float-right"><i class="fas fa-user-plus"></i> добавить нового пользователя</a>
+            </div>
+        </div>
         <?php if(empty($arData)) { ?>
             <div class="alert alert-info">
                 <i class="icon fas fa-info"></i> Пользователей нет!
             </div>
         <?php } else { ?>
-            <div class="row mb-3 mt-n5">
-                <div class="col col-sm-12">
-                    <a href="<?php echo url('admin_users_add'); ?>" class="btn btn-info float-right"><i class="fas fa-user-plus"></i> добавить нового пользователя</a>
-                </div>
-            </div>
             <div class="card">
                 <div class="card-body p-0">
                     <table class="table">
@@ -32,6 +31,7 @@
                             <th>Имя</th>
                             <th>Фамилия</th>
                             <th>Email</th>
+                            <th>Администратор</th>
                             <th style="width: 230px"></th>
                         </tr>
                         </thead>
@@ -42,6 +42,7 @@
                             <td><?php echo $arUser['firstname']; ?></td>
                             <td><?php echo $arUser['lastname']; ?></td>
                             <td><?php echo $arUser['email']; ?></td>
+                            <td><?php if($arUser['is_admin'] == 1){ ?><span class="badge bg-success">admin</span><?php } ?></td>
                             <td class="text-right">
                                 <form method="post" action="<?php echo url('admin_users_delete', ['id' => $arUser['id']]); ?>">
                                     <button class="btn btn-xs btn-danger float-right delete-btn" type="submit" data-toggle="modal" data-target="#modal-delete-user" data-message="Удалить пользователя <b><?php echo $arUser['firstname']; ?></b> [<?php echo $arUser['email']; ?>](<?php echo $arUser['id']; ?>)?"><i class="fas fa-trash"></i> удалить</button>

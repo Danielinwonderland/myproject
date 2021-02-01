@@ -40,16 +40,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($arData as $arData) { ?>
+                        <?php foreach ($arData as $arItem) { ?>
                         <tr>
-                            <td><?php echo $arData['id']; ?></td>
-                            <td><?php echo $arData['name']; ?></td>
-                            <td><?php echo $arData['parent_id']; ?></td>
+                            <td><?php echo $arItem['id']; ?></td>
+                            <td><?php
+                                for($i = 0; $i < $arItem['level']; $i++){
+                                    echo '&#10146';
+                                } 
+                                echo $arItem['name']; ?></td>
+                            <td><?php echo $arItem['parent_id']; ?></td>
                             <td class="text-right">
-                                <form method="post" action="<?php echo url('admin_categories_delete', ['id' => $arData['id']]); ?>">
-                                    <button class="btn btn-xs btn-danger float-right delete-btn" type="submit" data-toggle="modal" data-target="#modal-delete-user" data-message="Удалить категорию <b><?php echo $arData['name']; ?></b>(<?php echo $arData['id']; ?>)?"><i class="fas fa-trash"></i> удалить</button>
+                                <form method="post" action="<?php echo url('admin_categories_delete', ['id' => $arItem['id']]); ?>">
+                                    <button class="btn btn-xs btn-danger float-right delete-btn" type="submit" data-toggle="modal" data-target="#modal-delete-user" data-message="Удалить категорию <b><?php echo $arItem['name']; ?></b>(<?php echo $arItem['id']; ?>)?"><i class="fas fa-trash"></i> удалить</button>
                                 </form>
-                                <a class="btn btn-default btn-xs float-right mr-2" href="<?php echo url('admin_categories_edit', ['id' => $arData['id']]); ?>"><i class="fas fa-pencil-alt"></i> редактировать</a>
+                                <a class="btn btn-default btn-xs float-right mr-2" href="<?php echo url('admin_categories_edit', ['id' => $arItem['id']]); ?>"><i class="fas fa-pencil-alt"></i> редактировать</a>
                             </td>
                         </tr>
                         <?php } ?>

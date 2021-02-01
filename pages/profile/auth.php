@@ -1,5 +1,7 @@
 <?php
+use App\Entity\User;
 
+$user = new User;
 $error = false;
 $profile = url('profile');
 if(isAuthorizedUser()) {
@@ -9,7 +11,7 @@ if(isAuthorizedUser()) {
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
-if(!empty($_POST) && loginUser($email, $password)) {
+if(!empty($_POST) && $user->loginUser($email, $password)) {
     header("Location: $profile", true, 301);
     exit;
 } elseif(isset($_POST['email'])) {

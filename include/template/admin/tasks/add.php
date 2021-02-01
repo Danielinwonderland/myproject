@@ -15,7 +15,7 @@
 
         <div class="card">
             <!-- form start -->
-            <form class="form-horizontal" method="post">
+            <form class="form-horizontal" method="post" action="<?php echo url('admin_tasks_create'); ?>">
                 <div class="card-body">
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Заголовок задания</label>
@@ -38,25 +38,50 @@
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Заказчик</label>
                         <div class="col-sm-10">
-                            <input type="text" name="customer" value="<?php echo $arData['customer'] ?? ''; ?>" class="form-control">
+                            <select class="form-control" name="customer" id="">
+                                <option value=""></option>
+                                <?php foreach ($arData['customers_list'] as $arCustomer){ ?>
+                                <option value="<?php echo $arCustomer['customer_id']; ?>" <?php if(($arData['customer'] ?? '') == $arCustomer['customer_id']){?> selected="selected" <?php } ?>><?php
+                                    echo '[', $arCustomer['user_id'], '] ', $arCustomer['firstname']; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Исполнитель</label>
                         <div class="col-sm-10">
-                            <input type="text" name="executor" value="<?php echo $arData['executor'] ?? ''; ?>" class="form-control">
+                            <select class="form-control" name="executor" id="">
+                                <option value=""></option>
+                                <?php foreach ($arData['executors_list'] as $arExecutor){ ?>
+                                <option value="<?php echo $arExecutor['executor_id']; ?>" <?php if(($arData['executor'] ?? '') == $arExecutor['executor_id']){?> selected="selected" <?php } ?>><?php
+                                    echo '[', $arExecutor['user_id'], '] ', $arExecutor['firstname']; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Категория</label>
                         <div class="col-sm-10">
-                            <input type="text" name="category" value="<?php echo $arData['category'] ?? ''; ?>" class="form-control">
+                            <select class="form-control" name="category" id="">
+                                <option value=""></option>
+                                <?php foreach ($arData['categories_all'] as $arCategory){ ?>
+                                <option value="<?php echo $arCategory['id']; ?>" <?php if(($arData['category'] ?? '') == $arCategory['id']){?> selected="selected" <?php } ?>><?php
+                                    for($i = 0; $i < $arCategory['level']; $i++){
+                                        echo '&#10146';
+                                    } 
+                                    echo '[', $arCategory['id'], '] ', $arCategory['name']; ?></option>
+                                <?php } ?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-sm-2 col-form-label">Статус</label>
                         <div class="col-sm-10">
-                            <input type="text" name="status" value="<?php echo $arData['status'] ?? ''; ?>" class="form-control">
+                            <select name="status" class="form-control" id="">
+                                <option value="new">Новая</option>
+                                <option value="progress">Выполняется</option>
+                                <option value="done">Завершена</option>
+                            </select>
                         </div>
                     </div>
                 </div>

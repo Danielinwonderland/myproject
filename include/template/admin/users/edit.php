@@ -20,7 +20,7 @@
         <?php } else { ?>
             <div class="card">
                 <!-- form start -->
-                <form class="form-horizontal" method="post">
+                <form class="form-horizontal" method="post" action="<?php echo url('admin_users_update'); ?>">
                     <div class="card-body">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Имя</label>

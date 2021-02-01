@@ -1,5 +1,7 @@
 <?php
+use App\Entity\User;
 
-logoutUser();
+$user = new User;
+$user->logoutUser();
 
 header("Location: /", true, 301);

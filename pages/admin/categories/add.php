@@ -1,20 +1,12 @@
 <?php
+use App\Entity\Category;
+$category = new Category;
 $arData = [];
 
-if(!empty($_POST)) {
-    $name = trim($_POST['name'] ?? '');
-    $parent_id = trim($_POST['parent_id'] ?? '');
-
-    if($name != '') {
-        $result = addCategory($name, $parent_id);
-        if($result == true) {
-            header("Location: " . url('admin_categories'));
-            exit;
-        } else {
-            $arData['name'] = $name;
-            $arData['parent_id'] = $parent_id;
-        }
-    }
+if(!empty($_POST)){
+    $arData = $_POST;
 }
+
+$arData['categories_all'] = $category->getCategoriesListStructured();
 
 printTemplateHtml('admin/categories/add', $arData);

@@ -13,7 +13,7 @@
 <section class="content">
     <div class="container-fluid">
 
-        <?php if(empty($arData)) { ?>
+        <?php if(empty($arData['tasks'])) { ?>
             <div class="alert alert-info">
                 <i class="icon fas fa-info"></i> Заданий нет!
             </div>
@@ -47,23 +47,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($arData as $arData) { ?>
+                        <?php foreach ($arData['tasks'] as $arItem) { ?>
                         <tr>
-                            <td><?php echo $arData['id']; ?></td>
-                            <td><?php echo $arData['head']; ?></td>
-                            <td><?php echo $arData['descn']; ?></td>
-                            <td><?php echo $arData['price']; ?></td>
-                            <td><?php echo $arData['customer']; ?></td>
-                            <td><?php echo $arData['executor']; ?></td>
-                            <td><?php echo $arData['datatime']; ?></td>
-                            <td><?php echo $arData['category']; ?></td>
-                            <td><?php echo $arData['status']; ?></td>
-                            <td><?php echo $arData['views']; ?></td>
+                            <td><?php echo $arItem['id']; ?></td>
+                            <td><?php echo $arItem['head']; ?></td>
+                            <td><?php echo $arItem['descn']; ?></td>
+                            <td><?php echo $arItem['price']; ?></td>
+                            <td><?php foreach($arData['customers_list'] as $arCustomer){if($arCustomer['customer_id'] == $arItem['customer']){ echo '[', $arCustomer['user_id'], '] ', $arCustomer['firstname'];}} ?></td>
+                            <td><?php foreach($arData['executors_list'] as $arExecutor){if($arExecutor['executor_id'] == $arItem['executor']){ echo '[', $arExecutor['user_id'], '] ', $arExecutor['firstname'];}} ?></td>
+                            <td><?php echo $arItem['datatime']; ?></td>
+                            <td><?php foreach($arData['categories_all'] as $arCategories){if($arCategories['id'] == $arItem['category']){echo $arCategories['name'];}} ?></td>
+                            <td><?php echo $arItem['status']; ?></td>
+                            <td><?php echo $arItem['views']; ?></td>
                             <td class="text-right">
-                                <form method="post" action="<?php echo url('admin_tasks_delete', ['id' => $arData['id']]); ?>">
-                                    <button class="btn btn-xs btn-danger float-right delete-btn" type="submit" data-toggle="modal" data-target="#modal-delete-user" data-message="Удалить Задание <b><?php echo $arData['head']; ?></b>(<?php echo $arData['id']; ?>)?"><i class="fas fa-trash"></i> удалить</button>
+                                <form method="post" action="<?php echo url('admin_tasks_delete', ['id' => $arItem['id']]); ?>">
+                                    <button class="btn btn-xs btn-danger float-right delete-btn" type="submit" data-toggle="modal" data-target="#modal-delete-user" data-message="Удалить Задание <b><?php echo $arItem['head']; ?></b>(<?php echo $arItem['id']; ?>)?"><i class="fas fa-trash"></i> удалить</button>
                                 </form>
-                                <a class="btn btn-default btn-xs float-right mr-2" href="<?php echo url('admin_tasks_edit', ['id' => $arData['id']]); ?>"><i class="fas fa-pencil-alt"></i> редактировать</a>
+                                <a class="btn btn-default btn-xs float-right mr-2" href="<?php echo url('admin_tasks_edit', ['id' => $arItem['id']]); ?>"><i class="fas fa-pencil-alt"></i> редактировать</a>
                             </td>
                         </tr>
                         <?php } ?>
